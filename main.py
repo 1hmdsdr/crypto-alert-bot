@@ -1,6 +1,7 @@
 import os
 import json
 import requests
+from datetime import datetime
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 CHAT_ID = os.getenv("CHAT_ID")
@@ -81,12 +82,15 @@ for alert in alerts:
 
         alert["active"] = False
 
-        triggered_alerts.append({
-            "id": alert["id"],
-            "coin": coin,
-            "target_price": alert["target_price"],
-            "triggered_price": current_price
-        })
+triggered_alerts.append({
+    "id": alert["id"],
+    "coin": coin,
+    "condition": alert["condition"],
+    "target_price": alert["target_price"],
+    "triggered_price": current_price,
+    "exchange": alert["exchange"],
+    "triggered_at": datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
+})
 
         print(f"Alert sent for {coin}")
 
