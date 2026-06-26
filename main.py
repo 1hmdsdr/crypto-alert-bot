@@ -67,11 +67,13 @@ for alert in alerts:
     if should_trigger:
 
         message = (
-            f"🚨 ALERT TRIGGERED\n\n"
-            f"Coin: {symbol}\n"
-            f"Condition: {alert['condition']}\n"
-            f"Target Price: ${alert['target_price']}\n"
-            f"Current Price: ${current_price}"
+            f"🚨 CRYPTO ALERT 🚨\n\n"
+            f"🪙 Coin: {symbol}\n"
+            f"📈 Condition: {alert['condition'].upper()}\n"
+            f"🎯 Target: ${alert['target_price']}\n"
+            f"💰 Current Price: ${current_price}\n"
+            f"🏦 Source: CoinGecko\n"
+            f"⏰ Time: {datetime.utcnow().strftime('%Y-%m-%d %H:%M UTC')}"
         )
 
         telegram_url = (
