@@ -4,40 +4,32 @@ import requests
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 CHAT_ID = os.getenv("CHAT_ID")
 
-SYMBOL = "BTCUSDT"
-TARGET_PRICE = 1  # فقط برای تست
+print("BOT_TOKEN exists:", BOT_TOKEN is not None)
+print("CHAT_ID:", CHAT_ID)
 
-# دریافت قیمت از Bybit
+SYMBOL = "BTCUSDT"
+
 url = f"https://api.bybit.com/v5/market/tickers?category=spot&symbol={SYMBOL}"
 
 response = requests.get(url)
-data = response.json()
 
-print(data)
+print("Bybit response:")
+print(response.text)
+
+data = response.json()
 
 current_price = float(data["result"]["list"][0]["lastPrice"])
 
-print(f"Current price: {current_price}")
+print("Current price:", current_price)
 
-if current_price >= TARGET_PRICE:
+telegram_url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
 
-    message = (
-        f"🚨 ALERT!\n\n"
-        f"{SYMBOL}\n"
-        f"Current Price: {current_price}\n"
-        f"Exchange: Bybit"
-    )
+payload = {
+    "chat_id": CHAT_ID,
+    "text": f"Test message\n{SYMBOL}: {current_price}"
+}
 
-    telegram_url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+telegram_response = requests.post(telegram_url, data=payload)
 
-    payload = {
-        "chat_id": CHAT_ID,
-        "text": message
-    }
-
-    requests.post(telegram_url, data=payload)
-
-    print("Alert sent.")
-
-else:
-    print("Target not reached.")
+print("Telegram response:")
+print(telegram_response.text)
