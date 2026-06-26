@@ -6,6 +6,10 @@ from datetime import datetime
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 CHAT_ID = os.getenv("CHAT_ID")
 
+# خواندن مپ ارزها
+with open("coin_mapping.json", "r") as file:
+    coin_mapping = json.load(file)
+
 # خواندن Alert ها
 with open("alerts.json", "r") as file:
     alerts = json.load(file)
@@ -19,9 +23,15 @@ for alert in alerts:
     if not alert["active"]:
         continue
 
-    coin = alert["coin"]
+    symbol = alert["coin"].upper()
 
-    print(f"Checking {coin}")
+    if symbol not in coin_mapping:
+        print(f"Unsupported coin: {symbol}")
+        continue
+
+    coin = coin_mapping[symbol]
+
+    print(f"Checking {symbol}")
 
     try:
         url = (
@@ -34,10 +44,10 @@ for alert in alerts:
 
         current_price = data[coin]["usd"]
 
-        print(f"{coin}: {current_price}")
+        print(f"{symbol}: {current_price}")
 
     except Exception as e:
-        print(f"Error for {coin}: {e}")
+        print(f"Error for {symbol}: {e}")
         continue
 
     should_trigger = False
@@ -58,7 +68,7 @@ for alert in alerts:
 
         message = (
             f"🚨 ALERT TRIGGERED\n\n"
-            f"Coin: {coin}\n"
+            f"Coin: {symbol}\n"
             f"Condition: {alert['condition']}\n"
             f"Target Price: ${alert['target_price']}\n"
             f"Current Price: ${current_price}"
@@ -73,18 +83,16 @@ for alert in alerts:
             "text": message
         }
 
-        telegram_response = requests.post(
+        requests.post(
             telegram_url,
             data=payload
         )
-
-        print(telegram_response.text)
 
         alert["active"] = False
 
         triggered_alerts.append({
             "id": alert["id"],
-            "coin": coin,
+            "coin": symbol,
             "condition": alert["condition"],
             "target_price": alert["target_price"],
             "triggered_price": current_price,
@@ -94,7 +102,7 @@ for alert in alerts:
             )
         })
 
-        print(f"Alert sent for {coin}")
+        print(f"Alert sent for {symbol}")
 
 # ذخیره فایل ها
 with open("alerts.json", "w") as file:
