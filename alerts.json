@@ -1,10 +1,28 @@
 [
-  {
-    "id": 1,
-    "coin": "bitcoin",
-    "target_price": 1,
-    "condition": "above",
-    "exchange": "coingecko",
-    "active": true
-  }
+    {
+        "id": 1,
+        "coin": "bitcoin",
+        "target_price": 200000,
+        "condition": "above",
+        "exchange": "coingecko",
+        "active": true
+    },
+
+    {
+        "id": 2,
+        "coin": "ethereum",
+        "target_price": 1000,
+        "condition": "above",
+        "exchange": "coingecko",
+        "active": true
+    },
+
+    {
+        "id": 3,
+        "coin": "dogecoin",
+        "target_price": 0.1,
+        "condition": "below",
+        "exchange": "coingecko",
+        "active": true
+    }
 ]
