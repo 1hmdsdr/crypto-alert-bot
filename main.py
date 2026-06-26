@@ -15,17 +15,19 @@ print("CRYPTO ALERT BOT STARTED")
 print("Time:", datetime.utcnow())
 print("===================================")
 
-# خواندن مپ ارزها
+# خواندن فایل ها
+
 with open("coin_mapping.json", "r") as file:
     coin_mapping = json.load(file)
 
-# خواندن Alert ها
 with open("alerts.json", "r") as file:
     alerts = json.load(file)
 
-# خواندن تاریخچه
 with open("triggered_alerts.json", "r") as file:
     triggered_alerts = json.load(file)
+
+with open("stats.json", "r") as file:
+    stats = json.load(file)
 
 active_alerts = 0
 triggered_count = 0
@@ -52,7 +54,6 @@ for alert in alerts:
     for attempt in range(1, MAX_RETRIES + 1):
 
         try:
-            print(f"Attempt {attempt}...")
 
             url = (
                 "https://api.coingecko.com/api/v3/simple/price"
@@ -70,25 +71,21 @@ for alert in alerts:
 
             current_price = data[coin]["usd"]
 
-            print(f"{symbol} price: {current_price}")
+            print(f"{symbol}: {current_price}")
 
             break
 
         except Exception as e:
+
             print(
                 f"[ERROR] {symbol} "
                 f"(Attempt {attempt}): {e}"
             )
 
             if attempt < MAX_RETRIES:
-                print("Retrying in 5 seconds...")
                 time.sleep(5)
 
     if current_price is None:
-        print(
-            f"[FAILED] Could not fetch "
-            f"price for {symbol}"
-        )
         continue
 
     should_trigger = False
@@ -107,17 +104,12 @@ for alert in alerts:
 
     if should_trigger:
 
-        print(f"[TRIGGERED] {symbol}")
-
         message = (
             f"🚨 CRYPTO ALERT 🚨\n\n"
             f"🪙 Coin: {symbol}\n"
-            f"📈 Condition: "
-            f"{alert['condition'].upper()}\n"
-            f"🎯 Target Price: "
-            f"${alert['target_price']}\n"
-            f"💰 Current Price: "
-            f"${current_price}\n"
+            f"📈 Condition: {alert['condition'].upper()}\n"
+            f"🎯 Target: ${alert['target_price']}\n"
+            f"💰 Current: ${current_price}\n"
             f"🏦 Source: CoinGecko\n"
             f"⏰ Time: "
             f"{datetime.utcnow().strftime('%Y-%m-%d %H:%M UTC')}"
@@ -134,17 +126,11 @@ for alert in alerts:
         }
 
         try:
-            telegram_response = requests.post(
+
+            requests.post(
                 telegram_url,
                 data=payload,
                 timeout=REQUEST_TIMEOUT
-            )
-
-            telegram_response.raise_for_status()
-
-            print(
-                f"[SUCCESS] Telegram alert "
-                f"sent for {symbol}"
             )
 
             alert["active"] = False
@@ -165,12 +151,24 @@ for alert in alerts:
             triggered_count += 1
 
         except Exception as e:
-            print(
-                f"[ERROR] Failed to send "
-                f"Telegram message: {e}"
-            )
+            print(e)
 
-# ذخیره فایل‌ها
+# آمار
+
+stats["total_alerts"] = len(alerts)
+stats["active_alerts"] = sum(
+    1 for a in alerts if a["active"]
+)
+
+stats["triggered_alerts"] = len(
+    triggered_alerts
+)
+
+stats["last_run"] = datetime.utcnow().strftime(
+    "%Y-%m-%d %H:%M:%S UTC"
+)
+
+# ذخیره
 
 with open("alerts.json", "w") as file:
     json.dump(alerts, file, indent=4)
@@ -178,8 +176,37 @@ with open("alerts.json", "w") as file:
 with open("triggered_alerts.json", "w") as file:
     json.dump(triggered_alerts, file, indent=4)
 
-print("\n===================================")
-print("BOT FINISHED")
-print(f"Active alerts checked: {active_alerts}")
-print(f"Triggered alerts: {triggered_count}")
-print("===================================")
+with open("stats.json", "w") as file:
+    json.dump(stats, file, indent=4)
+
+# گزارش روزانه
+
+report = (
+    "📊 DAILY REPORT\n\n"
+    f"📌 Total Alerts: "
+    f"{stats['total_alerts']}\n"
+
+    f"🟢 Active Alerts: "
+    f"{stats['active_alerts']}\n"
+
+    f"🔴 Triggered Alerts: "
+    f"{stats['triggered_alerts']}\n\n"
+
+    f"⏰ Last Run:\n"
+    f"{stats['last_run']}"
+)
+
+telegram_url = (
+    f"https://api.telegram.org/"
+    f"bot{BOT_TOKEN}/sendMessage"
+)
+
+requests.post(
+    telegram_url,
+    data={
+        "chat_id": CHAT_ID,
+        "text": report
+    }
+)
+
+print("\nBOT FINISHED")
