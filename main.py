@@ -73,14 +73,15 @@ for alert in alerts:
             "text": message
         }
 
-        requests.post(
+        telegram_response = requests.post(
             telegram_url,
             data=payload
         )
 
+        print(telegram_response.text)
+
         alert["active"] = False
 
-        # ذخیره در تاریخچه
         triggered_alerts.append({
             "id": alert["id"],
             "coin": coin,
@@ -95,8 +96,7 @@ for alert in alerts:
 
         print(f"Alert sent for {coin}")
 
-# ذخیره تغییرات
-
+# ذخیره فایل ها
 with open("alerts.json", "w") as file:
     json.dump(alerts, file, indent=4)
 
