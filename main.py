@@ -24,7 +24,6 @@ for alert in alerts:
     print(f"Checking {coin}")
 
     try:
-
         url = (
             f"https://api.coingecko.com/api/v3/simple/price"
             f"?ids={coin}&vs_currencies=usd"
@@ -38,7 +37,6 @@ for alert in alerts:
         print(f"{coin}: {current_price}")
 
     except Exception as e:
-
         print(f"Error for {coin}: {e}")
         continue
 
@@ -82,15 +80,18 @@ for alert in alerts:
 
         alert["active"] = False
 
-triggered_alerts.append({
-    "id": alert["id"],
-    "coin": coin,
-    "condition": alert["condition"],
-    "target_price": alert["target_price"],
-    "triggered_price": current_price,
-    "exchange": alert["exchange"],
-    "triggered_at": datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
-})
+        # ذخیره در تاریخچه
+        triggered_alerts.append({
+            "id": alert["id"],
+            "coin": coin,
+            "condition": alert["condition"],
+            "target_price": alert["target_price"],
+            "triggered_price": current_price,
+            "exchange": alert["exchange"],
+            "triggered_at": datetime.utcnow().strftime(
+                "%Y-%m-%d %H:%M:%S UTC"
+            )
+        })
 
         print(f"Alert sent for {coin}")
 
