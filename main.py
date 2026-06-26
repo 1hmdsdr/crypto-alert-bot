@@ -1,10 +1,18 @@
 import os
+import requests
 
-print("Crypto Alert Bot started successfully!")
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+CHAT_ID = os.getenv("CHAT_ID")
 
-bot_token = os.getenv("BOT_TOKEN")
+message = "🚀 Crypto Alert Bot is connected successfully!"
 
-if bot_token:
-    print("BOT_TOKEN loaded successfully.")
-else:
-    print("BOT_TOKEN not found.")
+url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+
+payload = {
+    "chat_id": CHAT_ID,
+    "text": message
+}
+
+response = requests.post(url, data=payload)
+
+print(response.text)
