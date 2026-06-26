@@ -10,9 +10,14 @@ jobs:
   run-bot:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -29,3 +34,14 @@ jobs:
           CHAT_ID: ${{ secrets.CHAT_ID }}
         run: |
           python main.py
+
+      - name: Commit changes
+        run: |
+          git config --global user.name "crypto-alert-bot"
+          git config --global user.email "bot@github.com"
+
+          git add alerts.json triggered_alerts.json
+
+          git diff --cached --quiet || git commit -m "Update alerts and history"
+
+          git push
