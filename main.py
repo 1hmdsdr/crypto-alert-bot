@@ -6,7 +6,7 @@ CHAT_ID = os.getenv("CHAT_ID")
 
 # تنظیم Alert آزمایشی
 SYMBOL = "BTCUSDT"
-TARGET_PRICE = 100000  # برای تست تغییرش بده
+TARGET_PRICE = 1  # برای تست تغییرش بده
 
 # دریافت قیمت از Binance
 url = f"https://api.binance.com/api/v3/ticker/price?symbol={SYMBOL}"
