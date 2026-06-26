@@ -1,32 +1,69 @@
 import os
+import json
 import requests
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 CHAT_ID = os.getenv("CHAT_ID")
 
-coin_id = "bitcoin"
+# خواندن Alertها
+with open("alerts.json", "r") as file:
+    alerts = json.load(file)
 
-url = f"https://api.coingecko.com/api/v3/simple/price?ids={coin_id}&vs_currencies=usd"
+for alert in alerts:
 
-response = requests.get(url)
+    if not alert["active"]:
+        continue
 
-print("CoinGecko response:")
-print(response.text)
+    coin = alert["coin"]
 
-data = response.json()
+    url = (
+        f"https://api.coingecko.com/api/v3/simple/price"
+        f"?ids={coin}&vs_currencies=usd"
+    )
 
-current_price = data["bitcoin"]["usd"]
+    response = requests.get(url)
+    data = response.json()
 
-print("Current price:", current_price)
+    current_price = data[coin]["usd"]
 
-telegram_url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+    print(f"{coin}: {current_price}")
 
-payload = {
-    "chat_id": CHAT_ID,
-    "text": f"🚀 Test Alert\n\nBTC Price: ${current_price}"
-}
+    should_trigger = False
 
-telegram_response = requests.post(telegram_url, data=payload)
+    if (
+        alert["condition"] == "above"
+        and current_price >= alert["target_price"]
+    ):
+        should_trigger = True
 
-print("Telegram response:")
-print(telegram_response.text)
+    if (
+        alert["condition"] == "below"
+        and current_price <= alert["target_price"]
+    ):
+        should_trigger = True
+
+    if should_trigger:
+
+        message = (
+            f"🚨 ALERT TRIGGERED\n\n"
+            f"Coin: {coin}\n"
+            f"Current Price: ${current_price}\n"
+            f"Target: ${alert['target_price']}"
+        )
+
+        telegram_url = (
+            f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+        )
+
+        payload = {
+            "chat_id": CHAT_ID,
+            "text": message
+        }
+
+        requests.post(telegram_url, data=payload)
+
+        alert["active"] = False
+
+# ذخیره وضعیت جدید
+with open("alerts.json", "w") as file:
+    json.dump(alerts, file, indent=4)
