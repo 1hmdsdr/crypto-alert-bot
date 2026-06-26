@@ -1,0 +1,67 @@
+{
+    "created_at": "2026-06-26 18:18:12 UTC",
+    "alerts": [
+        {
+            "id": 1,
+            "coin": "BTC",
+            "target_price": 200000,
+            "condition": "above",
+            "exchange": "coingecko",
+            "active": true
+        },
+        {
+            "id": 2,
+            "coin": "ETH",
+            "target_price": 1000,
+            "condition": "above",
+            "exchange": "coingecko",
+            "active": false
+        },
+        {
+            "id": 3,
+            "coin": "DOGE",
+            "target_price": 0.1,
+            "condition": "below",
+            "exchange": "coingecko",
+            "active": false
+        }
+    ],
+    "history": [
+        {
+            "id": 2,
+            "coin": "ethereum",
+            "condition": "above",
+            "target_price": 1000,
+            "triggered_price": 1582.49,
+            "exchange": "coingecko",
+            "triggered_at": "2026-06-26 17:22:56 UTC"
+        },
+        {
+            "id": 3,
+            "coin": "dogecoin",
+            "condition": "below",
+            "target_price": 0.1,
+            "triggered_price": 0.075364,
+            "exchange": "coingecko",
+            "triggered_at": "2026-06-26 17:22:57 UTC"
+        },
+        {
+            "id": 2,
+            "coin": "ETH",
+            "condition": "above",
+            "target_price": 1000,
+            "triggered_price": 1579.75,
+            "exchange": "coingecko",
+            "triggered_at": "2026-06-26 17:56:17 UTC"
+        },
+        {
+            "id": 3,
+            "coin": "DOGE",
+            "condition": "below",
+            "target_price": 0.1,
+            "triggered_price": 0.075486,
+            "exchange": "coingecko",
+            "triggered_at": "2026-06-26 17:56:18 UTC"
+        }
+    ]
+}
