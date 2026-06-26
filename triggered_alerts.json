@@ -16,5 +16,23 @@
         "triggered_price": 0.075364,
         "exchange": "coingecko",
         "triggered_at": "2026-06-26 17:22:57 UTC"
+    },
+    {
+        "id": 2,
+        "coin": "ETH",
+        "condition": "above",
+        "target_price": 1000,
+        "triggered_price": 1579.75,
+        "exchange": "coingecko",
+        "triggered_at": "2026-06-26 17:56:17 UTC"
+    },
+    {
+        "id": 3,
+        "coin": "DOGE",
+        "condition": "below",
+        "target_price": 0.1,
+        "triggered_price": 0.075486,
+        "exchange": "coingecko",
+        "triggered_at": "2026-06-26 17:56:18 UTC"
     }
 ]
