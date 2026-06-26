@@ -1,1 +1,20 @@
-[]
+[
+    {
+        "id": 2,
+        "coin": "ethereum",
+        "condition": "above",
+        "target_price": 1000,
+        "triggered_price": 1582.49,
+        "exchange": "coingecko",
+        "triggered_at": "2026-06-26 17:22:56 UTC"
+    },
+    {
+        "id": 3,
+        "coin": "dogecoin",
+        "condition": "below",
+        "target_price": 0.1,
+        "triggered_price": 0.075364,
+        "exchange": "coingecko",
+        "triggered_at": "2026-06-26 17:22:57 UTC"
+    }
+]
