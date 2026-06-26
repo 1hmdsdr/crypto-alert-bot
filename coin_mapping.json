@@ -1,0 +1,22 @@
+{
+    "BTC": "bitcoin",
+    "ETH": "ethereum",
+    "DOGE": "dogecoin",
+    "SOL": "solana",
+    "BNB": "binancecoin",
+    "XRP": "ripple",
+    "ADA": "cardano",
+    "AVAX": "avalanche-2",
+    "LINK": "chainlink",
+    "TON": "the-open-network",
+    "TRX": "tron",
+    "DOT": "polkadot",
+    "LTC": "litecoin",
+    "BCH": "bitcoin-cash",
+    "ATOM": "cosmos",
+    "ETC": "ethereum-classic",
+    "XLM": "stellar",
+    "NEAR": "near",
+    "FIL": "filecoin",
+    "APT": "aptos"
+}
