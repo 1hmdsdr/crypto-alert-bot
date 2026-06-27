@@ -34,5 +34,14 @@
         "triggered_price": 0.075486,
         "exchange": "coingecko",
         "triggered_at": "2026-06-26 17:56:18 UTC"
+    },
+    {
+        "id": 2,
+        "coin": "ETH",
+        "condition": "below",
+        "target_price": 2000,
+        "triggered_price": 1574.57,
+        "exchange": "coingecko",
+        "triggered_at": "2026-06-27 19:38:29 UTC"
     }
 ]

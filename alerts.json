@@ -7,16 +7,14 @@
         "exchange": "coingecko",
         "active": true
     },
-
     {
         "id": 2,
         "coin": "ETH",
         "target_price": 2000,
         "condition": "below",
         "exchange": "coingecko",
-        "active": true
+        "active": false
     },
-
     {
         "id": 3,
         "coin": "SOL",
