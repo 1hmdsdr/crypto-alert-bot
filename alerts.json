@@ -2,25 +2,27 @@
     {
         "id": 1,
         "coin": "BTC",
-        "target_price": 200000,
+        "target_price": 120000,
         "condition": "above",
         "exchange": "coingecko",
         "active": true
     },
+
     {
         "id": 2,
         "coin": "ETH",
-        "target_price": 1000,
-        "condition": "above",
-        "exchange": "coingecko",
-        "active": false
-    },
-    {
-        "id": 3,
-        "coin": "DOGE",
-        "target_price": 0.1,
+        "target_price": 2000,
         "condition": "below",
         "exchange": "coingecko",
-        "active": false
+        "active": true
+    },
+
+    {
+        "id": 3,
+        "coin": "SOL",
+        "target_price": 300,
+        "condition": "above",
+        "exchange": "coingecko",
+        "active": true
     }
 ]
